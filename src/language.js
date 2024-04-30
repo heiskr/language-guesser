@@ -298,11 +298,20 @@ class Language {
    * @returns {Object} - The filtered and sorted language object with the highest score.
    */
   sortDetectedLanguages(detectedLanguages, allowList) {
-    const filteredLanguages = detectedLanguages.filter((language) =>
-      allowList.includes(language.alpha3)
-    );
+    const filteredLanguages = [];
+    for (const language of detectedLanguages) {
+      for (const allowedLanguage of allowList) {
+        if (language.alpha3 === allowedLanguage) {
+          filteredLanguages.push(language);
+        }
+      }
+    }
+
     filteredLanguages.sort((a, b) => b.score - a.score);
-    return filteredLanguages[0];
+    if (filteredLanguages.length === 0) {
+      return detectedLanguages[0];
+    }
+    return filteredLanguages;
   }
 
   /**
