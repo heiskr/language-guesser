@@ -1,4 +1,4 @@
-const Language = require('./language.cjs');
+const Language = require("./language.cjs");
 
 module.exports = {
   Language,
