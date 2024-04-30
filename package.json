@@ -5,7 +5,7 @@
   "type": "module",
   "license": "MIT",
   "types": "src/index.d.ts",
-  "main": "dist/cjs/index.js",
+  "main": "src/index.cjs",
   "module": "src/index.js",
   "scripts": {
     "build-cjs": "babel src --out-dir dist/cjs --presets=@babel/preset-env",
