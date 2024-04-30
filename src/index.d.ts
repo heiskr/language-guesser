@@ -23,6 +23,7 @@ declare module 'language-guesser' {
         addTrigrams(locale: string, sentence: string): void;
         addExtraSentence(locale: string, sentence: string): void;
         processExtraSentences(): void;
+        sortDetectedLanguages(detectedLanguages: Array<{ alpha3: string; alpha2: string; language: string; score: number }>, allowList: string[]): { alpha3: string; alpha2: string; language: string; score: number };
 
         static lansplit(s: string): string[] | undefined;
         static addModel(script: string, name: string, value: string): void;
