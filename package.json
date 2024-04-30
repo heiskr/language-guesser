@@ -8,8 +8,7 @@
   "main": "src/index.cjs",
   "module": "src/index.js",
   "scripts": {
-    "build-cjs": "babel src --out-dir dist/cjs --presets=@babel/preset-env",
-    "build-esm": "babel src --out-dir dist/esm --presets=@babel/preset-modules"
+    "build-cjs": "babel src --out-dir dist/cjs --presets=@babel/preset-env"
   },
   "devDependencies": {
     "@babel/cli": "^7.24.5",

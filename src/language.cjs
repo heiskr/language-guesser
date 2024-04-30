@@ -1,26 +1,14 @@
-"use strict";
+const languageData = require("./languages.json");
+const data = require("./data.json");
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-var _languages = _interopRequireDefault(require("./languages.json"));
-var _data = _interopRequireDefault(require("./data.json"));
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
-function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-var scripts = {
+const scripts = {
   cmn: /[\u2E80-\u2E99\u2E9B-\u2EF3\u2F00-\u2FD5\u3005\u3007\u3021-\u3029\u3038-\u303B\u3400-\u4DB5\u4E00-\u9FCC\uF900-\uFA6D\uFA70-\uFAD9]|[\uD840-\uD868\uD86A-\uD86C][\uDC00-\uDFFF]|\uD869[\uDC00-\uDED6\uDF00-\uDFFF]|\uD86D[\uDC00-\uDF34\uDF40-\uDFFF]|\uD86E[\uDC00-\uDC1D]|\uD87E[\uDC00-\uDE1D]/g,
-  Latin: /[A-Za-z\xAA\xBA\xC0-\xD6\xD8-\xF6\xF8-\u02B8\u02E0-\u02E4\u1D00-\u1D25\u1D2C-\u1D5C\u1D62-\u1D65\u1D6B-\u1D77\u1D79-\u1DBE\u1E00-\u1EFF\u2071\u207F\u2090-\u209C\u212A\u212B\u2132\u214E\u2160-\u2188\u2C60-\u2C7F\uA722-\uA787\uA78B-\uA78E\uA790-\uA7AD\uA7B0\uA7B1\uA7F7-\uA7FF\uAB30-\uAB5A\uAB5C-\uAB5F\uAB64\uFB00-\uFB06\uFF21-\uFF3A\uFF41-\uFF5A]/g,
-  Cyrillic: /[\u0400-\u0484\u0487-\u052F\u1D2B\u1D78\u2DE0-\u2DFF\uA640-\uA69D\uA69F]/g,
-  Arabic: /[\u0600-\u0604\u0606-\u060B\u060D-\u061A\u061E\u0620-\u063F\u0641-\u064A\u0656-\u065F\u066A-\u066F\u0671-\u06DC\u06DE-\u06FF\u0750-\u077F\u08A0-\u08B2\u08E4-\u08FF\uFB50-\uFBC1\uFBD3-\uFD3D\uFD50-\uFD8F\uFD92-\uFDC7\uFDF0-\uFDFD\uFE70-\uFE74\uFE76-\uFEFC]|\uD803[\uDE60-\uDE7E]|\uD83B[\uDE00-\uDE03\uDE05-\uDE1F\uDE21\uDE22\uDE24\uDE27\uDE29-\uDE32\uDE34-\uDE37\uDE39\uDE3B\uDE42\uDE47\uDE49\uDE4B\uDE4D-\uDE4F\uDE51\uDE52\uDE54\uDE57\uDE59\uDE5B\uDE5D\uDE5F\uDE61\uDE62\uDE64\uDE67-\uDE6A\uDE6C-\uDE72\uDE74-\uDE77\uDE79-\uDE7C\uDE7E\uDE80-\uDE89\uDE8B-\uDE9B\uDEA1-\uDEA3\uDEA5-\uDEA9\uDEAB-\uDEBB\uDEF0\uDEF1]/g,
+  Latin:
+    /[A-Za-z\xAA\xBA\xC0-\xD6\xD8-\xF6\xF8-\u02B8\u02E0-\u02E4\u1D00-\u1D25\u1D2C-\u1D5C\u1D62-\u1D65\u1D6B-\u1D77\u1D79-\u1DBE\u1E00-\u1EFF\u2071\u207F\u2090-\u209C\u212A\u212B\u2132\u214E\u2160-\u2188\u2C60-\u2C7F\uA722-\uA787\uA78B-\uA78E\uA790-\uA7AD\uA7B0\uA7B1\uA7F7-\uA7FF\uAB30-\uAB5A\uAB5C-\uAB5F\uAB64\uFB00-\uFB06\uFF21-\uFF3A\uFF41-\uFF5A]/g,
+  Cyrillic:
+    /[\u0400-\u0484\u0487-\u052F\u1D2B\u1D78\u2DE0-\u2DFF\uA640-\uA69D\uA69F]/g,
+  Arabic:
+    /[\u0600-\u0604\u0606-\u060B\u060D-\u061A\u061E\u0620-\u063F\u0641-\u064A\u0656-\u065F\u066A-\u066F\u0671-\u06DC\u06DE-\u06FF\u0750-\u077F\u08A0-\u08B2\u08E4-\u08FF\uFB50-\uFBC1\uFBD3-\uFD3D\uFD50-\uFD8F\uFD92-\uFDC7\uFDF0-\uFDFD\uFE70-\uFE74\uFE76-\uFEFC]|\uD803[\uDE60-\uDE7E]|\uD83B[\uDE00-\uDE03\uDE05-\uDE1F\uDE21\uDE22\uDE24\uDE27\uDE29-\uDE32\uDE34-\uDE37\uDE39\uDE3B\uDE42\uDE47\uDE49\uDE4B\uDE4D-\uDE4F\uDE51\uDE52\uDE54\uDE57\uDE59\uDE5B\uDE5D\uDE5F\uDE61\uDE62\uDE64\uDE67-\uDE6A\uDE6C-\uDE72\uDE74-\uDE77\uDE79-\uDE7C\uDE7E\uDE80-\uDE89\uDE8B-\uDE9B\uDEA1-\uDEA3\uDEA5-\uDEA9\uDEAB-\uDEBB\uDEF0\uDEF1]/g,
   ben: /[\u0980-\u0983\u0985-\u098C\u098F\u0990\u0993-\u09A8\u09AA-\u09B0\u09B2\u09B6-\u09B9\u09BC-\u09C4\u09C7\u09C8\u09CB-\u09CE\u09D7\u09DC\u09DD\u09DF-\u09E3\u09E6-\u09FB]/g,
   Devanagari: /[\u0900-\u0950\u0953-\u0963\u0966-\u097F\uA8E0-\uA8FB]/g,
   jpn: /[\u3041-\u3096\u309D-\u309F]|\uD82C\uDC01|\uD83C\uDE00|[\u30A1-\u30FA\u30FD-\u30FF\u31F0-\u31FF\u32D0-\u32FE\u3300-\u3357\uFF66-\uFF6F\uFF71-\uFF9D]|\uD82C\uDC00/g,
@@ -33,7 +21,8 @@ var scripts = {
   Myanmar: /[\u1000-\u109F\uA9E0-\uA9FE\uAA60-\uAA7F]/g,
   ori: /[\u0B01-\u0B03\u0B05-\u0B0C\u0B0F\u0B10\u0B13-\u0B28\u0B2A-\u0B30\u0B32\u0B33\u0B35-\u0B39\u0B3C-\u0B44\u0B47\u0B48\u0B4B-\u0B4D\u0B56\u0B57\u0B5C\u0B5D\u0B5F-\u0B63\u0B66-\u0B77]/g,
   pan: /[\u0A01-\u0A03\u0A05-\u0A0A\u0A0F\u0A10\u0A13-\u0A28\u0A2A-\u0A30\u0A32\u0A33\u0A35\u0A36\u0A38\u0A39\u0A3C\u0A3E-\u0A42\u0A47\u0A48\u0A4B-\u0A4D\u0A51\u0A59-\u0A5C\u0A5E\u0A66-\u0A75]/g,
-  Ethiopic: /[\u1200-\u1248\u124A-\u124D\u1250-\u1256\u1258\u125A-\u125D\u1260-\u1288\u128A-\u128D\u1290-\u12B0\u12B2-\u12B5\u12B8-\u12BE\u12C0\u12C2-\u12C5\u12C8-\u12D6\u12D8-\u1310\u1312-\u1315\u1318-\u135A\u135D-\u137C\u1380-\u1399\u2D80-\u2D96\u2DA0-\u2DA6\u2DA8-\u2DAE\u2DB0-\u2DB6\u2DB8-\u2DBE\u2DC0-\u2DC6\u2DC8-\u2DCE\u2DD0-\u2DD6\u2DD8-\u2DDE\uAB01-\uAB06\uAB09-\uAB0E\uAB11-\uAB16\uAB20-\uAB26\uAB28-\uAB2E]/g,
+  Ethiopic:
+    /[\u1200-\u1248\u124A-\u124D\u1250-\u1256\u1258\u125A-\u125D\u1260-\u1288\u128A-\u128D\u1290-\u12B0\u12B2-\u12B5\u12B8-\u12BE\u12C0\u12C2-\u12C5\u12C8-\u12D6\u12D8-\u1310\u1312-\u1315\u1318-\u135A\u135D-\u137C\u1380-\u1399\u2D80-\u2D96\u2DA0-\u2DA6\u2DA8-\u2DAE\u2DB0-\u2DB6\u2DB8-\u2DBE\u2DC0-\u2DC6\u2DC8-\u2DCE\u2DD0-\u2DD6\u2DD8-\u2DDE\uAB01-\uAB06\uAB09-\uAB0E\uAB11-\uAB16\uAB20-\uAB26\uAB28-\uAB2E]/g,
   tha: /[\u0E01-\u0E3A\u0E40-\u0E5B]/g,
   sin: /[\u0D82\u0D83\u0D85-\u0D96\u0D9A-\u0DB1\u0DB3-\u0DBB\u0DBD\u0DC0-\u0DC6\u0DCA\u0DCF-\u0DD4\u0DD6\u0DD8-\u0DDF\u0DE6-\u0DEF\u0DF2-\u0DF4]|\uD804[\uDDE1-\uDDF4]/g,
   ell: /[\u0370-\u0373\u0375-\u0377\u037A-\u037D\u037F\u0384\u0386\u0388-\u038A\u038C\u038E-\u03A1\u03A3-\u03E1\u03F0-\u03FF\u1D26-\u1D2A\u1D5D-\u1D61\u1D66-\u1D6A\u1DBF\u1F00-\u1F15\u1F18-\u1F1D\u1F20-\u1F45\u1F48-\u1F4D\u1F50-\u1F57\u1F59\u1F5B\u1F5D\u1F5F-\u1F7D\u1F80-\u1FB4\u1FB6-\u1FC4\u1FC6-\u1FD3\u1FD6-\u1FDB\u1FDD-\u1FEF\u1FF2-\u1FF4\u1FF6-\u1FFE\u2126\uAB65]|\uD800[\uDD40-\uDD8C\uDDA0]|\uD834[\uDE00-\uDE45]/g,
@@ -41,343 +30,315 @@ var scripts = {
   hye: /[\u0531-\u0556\u0559-\u055F\u0561-\u0587\u058A\u058D-\u058F\uFB13-\uFB17]/g,
   sat: /[\u1C50-\u1C7F]/g,
   bod: /[\u0F00-\u0F47\u0F49-\u0F6C\u0F71-\u0F97\u0F99-\u0FBC\u0FBE-\u0FCC\u0FCE-\u0FD4\u0FD9\u0FDA]/g,
-  Hebrew: /[\u0591-\u05C7\u05D0-\u05EA\u05F0-\u05F4\uFB1D-\uFB36\uFB38-\uFB3C\uFB3E\uFB40\uFB41\uFB43\uFB44\uFB46-\uFB4F]/g,
+  Hebrew:
+    /[\u0591-\u05C7\u05D0-\u05EA\u05F0-\u05F4\uFB1D-\uFB36\uFB38-\uFB3C\uFB3E\uFB40\uFB41\uFB43\uFB44\uFB46-\uFB4F]/g,
   kat: /[\u10A0-\u10C5\u10C7\u10CD\u10D0-\u10FA\u10FC-\u10FF\u2D00-\u2D25\u2D27\u2D2D]/g,
   lao: /[\u0E81\u0E82\u0E84\u0E87\u0E88\u0E8A\u0E8D\u0E94-\u0E97\u0E99-\u0E9F\u0EA1-\u0EA3\u0EA5\u0EA7\u0EAA\u0EAB\u0EAD-\u0EB9\u0EBB-\u0EBD\u0EC0-\u0EC4\u0EC6\u0EC8-\u0ECD\u0ED0-\u0ED9\u0EDC-\u0EDF]/g,
   zgh: /[\u2D30-\u2D67\u2D6F\u2D70\u2D7F]/g,
   iii: /[\uA000-\uA48C\uA490-\uA4C6]/g,
-  aii: /[\u0700-\u070D\u070F-\u074A\u074D-\u074F]/g
+  aii: /[\u0700-\u070D\u070F-\u074A\u074D-\u074F]/g,
 };
-var scriptKeys = Object.keys(scripts);
-var und = function und() {
-  return [['und', 1]];
-};
-var Language = /*#__PURE__*/function () {
-  function Language() {
-    _classCallCheck(this, Language);
+
+const scriptKeys = Object.keys(scripts);
+
+const und = () => [["und", 1]];
+
+class Language {
+  constructor() {
     this.languagesAlpha3 = {};
     this.languagesAlpha2 = {};
     this.extraSentences = [];
     this.buildData();
   }
-  return _createClass(Language, [{
-    key: "buildData",
-    value: function buildData() {
-      var _iterator = _createForOfIteratorHelper(_languages["default"]),
-        _step;
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var element = _step.value;
-          var language = {
-            alpha2: element[0],
-            alpha3: element[1],
-            name: element[2]
-          };
-          this.languagesAlpha3[language.alpha3] = language;
-          this.languagesAlpha2[language.alpha2] = language;
-        }
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
-      }
-    }
-  }, {
-    key: "transformAllowList",
-    value: function transformAllowList(allowList) {
-      var result = [];
-      var _iterator2 = _createForOfIteratorHelper(allowList),
-        _step2;
-      try {
-        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-          var element = _step2.value;
-          if (element.length === 3) {
-            result.push(element);
-          } else {
-            var language = this.languagesAlpha2[element];
-            if (language) {
-              result.push(language.alpha3);
-            }
-          }
-        }
-      } catch (err) {
-        _iterator2.e(err);
-      } finally {
-        _iterator2.f();
-      }
-      return result;
-    }
-  }, {
-    key: "guess",
-    value: function guess(utterance, allowList, limit) {
-      var options = {};
-      if (utterance.length < 10) {
-        options.minLength = utterance.length;
-      }
-      if (allowList && allowList.length && allowList.length > 0) {
-        options.allowList = this.transformAllowList(allowList);
-      }
-      var scores = Language.detectAll(utterance, options);
-      var result = [];
-      var _iterator3 = _createForOfIteratorHelper(scores),
-        _step3;
-      try {
-        for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-          var element = _step3.value;
-          var language = this.languagesAlpha3[element[0]];
-          if (language) {
-            result.push({
-              alpha3: language.alpha3,
-              alpha2: language.alpha2,
-              language: language.name,
-              score: element[1]
-            });
-            if (limit && result.length >= limit) {
-              break;
-            }
-          }
-        }
-      } catch (err) {
-        _iterator3.e(err);
-      } finally {
-        _iterator3.f();
-      }
-      return result;
-    }
 
-    /**
-     * Given an utterance, an allow list of iso codes and the limit of results,
-     * return the language with the best score.
-     * The allowList is optional.
-     * @param {String} utterance Utterance wich we want to guess the language.
-     * @param {String[]} allowList allowList of accepted languages.
-     * @return {Object} Best guess.
-     */
-  }, {
-    key: "guessBest",
-    value: function guessBest(utterance, allowList) {
-      return this.guess(utterance, allowList, 1)[0];
-    }
-  }, {
-    key: "addTrigrams",
-    value: function addTrigrams(locale, sentence) {
-      var language = this.languagesAlpha2[locale];
-      var iso3 = language ? language.alpha3 : locale;
-      var script = Language.getTopScript(sentence)[0];
-      var trigrams = Language.getTrigrams(sentence);
-      if (_data["default"][script]) {
-        if (!_data["default"][script][iso3]) {
-          _data["default"][script][iso3] = {};
-        }
-        trigrams.forEach(function (trigram) {
-          _data["default"][script][iso3][trigram] = 1;
-        });
-      }
-    }
-  }, {
-    key: "addExtraSentence",
-    value: function addExtraSentence(locale, sentence) {
-      this.extraSentences.push([locale, sentence]);
-      this.addTrigrams(locale, sentence);
-    }
-  }, {
-    key: "processExtraSentences",
-    value: function processExtraSentences() {
-      var _this = this;
-      this.extraSentences.forEach(function (item) {
-        _this.addTrigrams(item[0], item[1]);
-      });
-    }
-  }, {
-    key: "addModel",
-    value: function addModel(script, name, value) {
-      Language.addModel(script, name, value);
-    }
-  }], [{
-    key: "getTrigrams",
-    value: function getTrigrams(srcValue) {
-      var result = [];
-      var value = srcValue ? " ".concat(String(srcValue).replace(/[\u0021-\u0040]+/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase(), " ") : '';
-      if (!value || value.length < 3) {
-        return result;
-      }
-      for (var i = 0, l = value.length - 2; i < l; i += 1) {
-        result[i] = value.substring(i, i + 3);
-      }
+  static getTrigrams(srcValue) {
+    const result = [];
+    const value = srcValue
+      ? ` ${String(srcValue)
+          .replace(/[\u0021-\u0040]+/g, " ")
+          .replace(/\s+/g, " ")
+          .trim()
+          .toLowerCase()} `
+      : "";
+    if (!value || value.length < 3) {
       return result;
     }
-  }, {
-    key: "asTuples",
-    value: function asTuples(value) {
-      var dictionary = Language.getTrigrams(value).reduce(function (srcprev, current) {
-        var prev = srcprev;
+    for (let i = 0, l = value.length - 2; i < l; i += 1) {
+      result[i] = value.substring(i, i + 3);
+    }
+    return result;
+  }
+
+  static asTuples(value) {
+    const dictionary = Language.getTrigrams(value).reduce(
+      (srcprev, current) => {
+        const prev = srcprev;
         prev[current] = (prev[current] || 0) + 1;
         return prev;
-      }, {});
-      var tuples = [];
-      Object.keys(dictionary).forEach(function (key) {
-        tuples.push([key, dictionary[key]]);
-      });
-      tuples.sort(function (a, b) {
-        return a[1] - b[1];
-      });
-      return tuples;
-    }
-  }, {
-    key: "getDistance",
-    value: function getDistance(trigrams, model) {
-      var distance = 0;
-      trigrams.forEach(function (currentTrigram) {
-        distance += currentTrigram[0] in model ? Math.abs(currentTrigram[1] - model[currentTrigram[0]] - 1) : 300;
-      });
-      return distance;
-    }
-  }, {
-    key: "getOccurrence",
-    value: function getOccurrence(value, expression) {
-      var count = value.match(expression);
-      return (count ? count.length : 0) / value.length || 0;
-    }
-  }, {
-    key: "isLatin",
-    value: function isLatin(value) {
-      var total = 0;
-      var half = value.length / 2;
-      for (var i = 0; i < value.length; i += 1) {
-        var c = value.charCodeAt(i);
-        if (c >= 32 && c <= 126) {
-          total += 1;
-          if (total > half) {
-            return true;
-          }
+      },
+      {}
+    );
+    const tuples = [];
+    Object.keys(dictionary).forEach((key) => {
+      tuples.push([key, dictionary[key]]);
+    });
+    tuples.sort((a, b) => a[1] - b[1]);
+    return tuples;
+  }
+
+  static getDistance(trigrams, model) {
+    let distance = 0;
+    trigrams.forEach((currentTrigram) => {
+      distance +=
+        currentTrigram[0] in model
+          ? Math.abs(currentTrigram[1] - model[currentTrigram[0]] - 1)
+          : 300;
+    });
+    return distance;
+  }
+
+  static getOccurrence(value, expression) {
+    const count = value.match(expression);
+    return (count ? count.length : 0) / value.length || 0;
+  }
+
+  static isLatin(value) {
+    let total = 0;
+    const half = value.length / 2;
+    for (let i = 0; i < value.length; i += 1) {
+      const c = value.charCodeAt(i);
+      if (c >= 32 && c <= 126) {
+        total += 1;
+        if (total > half) {
+          return true;
         }
       }
-      return total > half;
     }
-  }, {
-    key: "getTopScript",
-    value: function getTopScript(value) {
-      if (Language.isLatin(value)) {
-        return ['Latin', 1];
-      }
-      var topCount = -1;
-      var topScript;
-      for (var _i = 0, _scriptKeys = scriptKeys; _i < _scriptKeys.length; _i++) {
-        var element = _scriptKeys[_i];
-        var script = element;
-        var count = Language.getOccurrence(value, scripts[script]);
-        if (count > topCount) {
-          topCount = count;
-          topScript = script;
-          if (topCount === 1) {
-            return [topScript, topCount];
-          }
+    return total > half;
+  }
+
+  static getTopScript(value) {
+    if (Language.isLatin(value)) {
+      return ["Latin", 1];
+    }
+    let topCount = -1;
+    let topScript;
+    for (const element of scriptKeys) {
+      const script = element;
+      const count = Language.getOccurrence(value, scripts[script]);
+      if (count > topCount) {
+        topCount = count;
+        topScript = script;
+        if (topCount === 1) {
+          return [topScript, topCount];
         }
       }
-      return [topScript, topCount];
     }
-  }, {
-    key: "filterLanguages",
-    value: function filterLanguages(languages, allowList, denyList) {
-      if (allowList.length === 0 && denyList.length === 0) {
-        return languages;
-      }
-      var filteredLanguages = {};
-      Object.keys(languages).forEach(function (language) {
-        if ((allowList.length === 0 || allowList.indexOf(language) > -1) && denyList.indexOf(language) === -1) {
-          filteredLanguages[language] = languages[language];
-        }
-      });
-      return filteredLanguages;
+    return [topScript, topCount];
+  }
+
+  static filterLanguages(languages, allowList, denyList) {
+    if (allowList.length === 0 && denyList.length === 0) {
+      return languages;
     }
-  }, {
-    key: "getDistances",
-    value: function getDistances(trigrams, srcLanguages, options) {
-      var distances = [];
-      var allowList = options.allowList || [];
-      var denyList = options.denyList || [];
-      var languages = Language.filterLanguages(srcLanguages, allowList, denyList);
-      if (!languages) {
-        return und();
+    const filteredLanguages = {};
+    Object.keys(languages).forEach((language) => {
+      if (
+        (allowList.length === 0 || allowList.indexOf(language) > -1) &&
+        denyList.indexOf(language) === -1
+      ) {
+        filteredLanguages[language] = languages[language];
       }
-      Object.keys(languages).forEach(function (language) {
-        distances.push([language, Language.getDistance(trigrams, languages[language])]);
-      });
-      return distances.sort(function (a, b) {
-        return a[1] - b[1];
-      });
+    });
+    return filteredLanguages;
+  }
+
+  static getDistances(trigrams, srcLanguages, options) {
+    const distances = [];
+    const allowList = options.allowList || [];
+    const denyList = options.denyList || [];
+    const languages = Language.filterLanguages(
+      srcLanguages,
+      allowList,
+      denyList
+    );
+    if (!languages) {
+      return und();
     }
-  }, {
-    key: "detectAll",
-    value: function detectAll(srcValue) {
-      var settings = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var minLength = settings.minLength || 10;
-      if (!srcValue || srcValue.length < minLength) {
-        return und();
-      }
-      var value = srcValue.substr(0, 2048);
-      var script = Language.getTopScript(value);
-      if (!(script[0] in _data["default"]) && script[1] > 0.5) {
-        if (settings.allowList) {
-          if (settings.allowList.includes(script[0])) {
-            return [[script[0], 1]];
-          }
-          if (script[0] === 'cmn' && settings.allowList.includes('jpn')) {
-            return [['jpn', 1]];
-          }
-        } else {
+    Object.keys(languages).forEach((language) => {
+      distances.push([
+        language,
+        Language.getDistance(trigrams, languages[language]),
+      ]);
+    });
+    return distances.sort((a, b) => a[1] - b[1]);
+  }
+
+  static detectAll(srcValue, settings = {}) {
+    const minLength = settings.minLength || 10;
+    if (!srcValue || srcValue.length < minLength) {
+      return und();
+    }
+    const value = srcValue.substr(0, 2048);
+    const script = Language.getTopScript(value);
+    if (!(script[0] in data) && script[1] > 0.5) {
+      if (settings.allowList) {
+        if (settings.allowList.includes(script[0])) {
           return [[script[0], 1]];
         }
-      }
-      if (_data["default"][script[0]]) {
-        var distances = Language.getDistances(Language.asTuples(value), _data["default"][script[0]], settings);
-        if (distances[0][0] === 'und') {
-          return [[script[0], 1]];
+        if (script[0] === "cmn" && settings.allowList.includes("jpn")) {
+          return [["jpn", 1]];
         }
-        var min = distances[0][1];
-        var max = value.length * 300 - min;
-        return distances.map(function (d) {
-          return [d[0], 1 - (d[1] - min) / max || 0];
+      } else {
+        return [[script[0], 1]];
+      }
+    }
+
+    if (data[script[0]]) {
+      const distances = Language.getDistances(
+        Language.asTuples(value),
+        data[script[0]],
+        settings
+      );
+      if (distances[0][0] === "und") {
+        return [[script[0], 1]];
+      }
+      const min = distances[0][1];
+      const max = value.length * 300 - min;
+      return distances.map((d) => [d[0], 1 - (d[1] - min) / max || 0]);
+    }
+    return [[script[0], 1]];
+  }
+
+  buildData() {
+    for (const element of languageData) {
+      const language = {
+        alpha2: element[0],
+        alpha3: element[1],
+        name: element[2],
+      };
+      this.languagesAlpha3[language.alpha3] = language;
+      this.languagesAlpha2[language.alpha2] = language;
+    }
+  }
+
+  transformAllowList(allowList) {
+    const result = [];
+    for (const element of allowList) {
+      if (element.length === 3) {
+        result.push(element);
+      } else {
+        const language = this.languagesAlpha2[element];
+        if (language) {
+          result.push(language.alpha3);
+        }
+      }
+    }
+    return result;
+  }
+
+  guess(utterance, allowList, limit) {
+    const options = {};
+    if (utterance.length < 10) {
+      options.minLength = utterance.length;
+    }
+    if (allowList && allowList.length && allowList.length > 0) {
+      options.allowList = this.transformAllowList(allowList);
+    }
+    const scores = Language.detectAll(utterance, options);
+    const result = [];
+    for (const element of scores) {
+      const language = this.languagesAlpha3[element[0]];
+      if (language) {
+        result.push({
+          alpha3: language.alpha3,
+          alpha2: language.alpha2,
+          language: language.name,
+          score: element[1],
         });
+        if (limit && result.length >= limit) {
+          break;
+        }
       }
-      return [[script[0], 1]];
     }
-  }, {
-    key: "lansplit",
-    value: function lansplit(s) {
-      if (s.includes('|')) {
-        return s.split('|');
+    return result;
+  }
+
+  /**
+   * Given an utterance, an allow list of iso codes and the limit of results,
+   * return the language with the best score.
+   * The allowList is optional.
+   * @param {String} utterance Utterance wich we want to guess the language.
+   * @param {String[]} allowList allowList of accepted languages.
+   * @return {Object} Best guess.
+   */
+  guessBest(utterance, allowList) {
+    return this.guess(utterance, allowList, 1)[0];
+  }
+
+  addTrigrams(locale, sentence) {
+    const language = this.languagesAlpha2[locale];
+    const iso3 = language ? language.alpha3 : locale;
+    const script = Language.getTopScript(sentence)[0];
+    const trigrams = Language.getTrigrams(sentence);
+    if (data[script]) {
+      if (!data[script][iso3]) {
+        data[script][iso3] = {};
       }
-      var result = [];
-      for (var i = 0; i < s.length; i += 3) {
-        result.push(s.substr(i, 3));
-      }
-      return result;
-    }
-  }, {
-    key: "addModel",
-    value: function addModel(script, name, value) {
-      var languages = _data["default"][script];
-      var model = Language.lansplit(value);
-      var weight = model.length;
-      var trigrams = {};
-      while (weight > 0) {
-        weight -= 1;
-        trigrams[model[weight]] = weight;
-      }
-      languages[name] = trigrams;
-    }
-  }, {
-    key: "buildModel",
-    value: function buildModel() {
-      Object.keys(_data["default"]).forEach(function (script) {
-        var languages = _data["default"][script];
-        Object.keys(languages).forEach(function (name) {
-          Language.addModel(script, name, languages[name]);
-        });
+      trigrams.forEach((trigram) => {
+        data[script][iso3][trigram] = 1;
       });
     }
-  }]);
-}();
+  }
+
+  addExtraSentence(locale, sentence) {
+    this.extraSentences.push([locale, sentence]);
+    this.addTrigrams(locale, sentence);
+  }
+
+  processExtraSentences() {
+    this.extraSentences.forEach((item) => {
+      this.addTrigrams(item[0], item[1]);
+    });
+  }
+
+  static lansplit(s) {
+    if (s.includes("|")) {
+      return s.split("|");
+    }
+    const result = [];
+    for (let i = 0; i < s.length; i += 3) {
+      result.push(s.substr(i, 3));
+    }
+    return result;
+  }
+
+  static addModel(script, name, value) {
+    const languages = data[script];
+    const model = Language.lansplit(value);
+    let weight = model.length;
+    const trigrams = {};
+    while (weight > 0) {
+      weight -= 1;
+      trigrams[model[weight]] = weight;
+    }
+    languages[name] = trigrams;
+  }
+
+  addModel(script, name, value) {
+    Language.addModel(script, name, value);
+  }
+
+  static buildModel() {
+    Object.keys(data).forEach((script) => {
+      const languages = data[script];
+      Object.keys(languages).forEach((name) => {
+        Language.addModel(script, name, languages[name]);
+      });
+    });
+  }
+}
+
 Language.buildModel();
-var _default = exports["default"] = Language;
+
+module.exports = Language;
