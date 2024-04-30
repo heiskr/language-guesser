@@ -43,6 +43,9 @@ const scriptKeys = Object.keys(scripts);
 
 const und = () => [["und", 1]];
 
+/**
+ * Represents a language detection utility.
+ */
 class Language {
   constructor() {
     this.languagesAlpha3 = {};
@@ -51,6 +54,12 @@ class Language {
     this.buildData();
   }
 
+  /**
+   * Returns an array of trigrams from the given source value.
+   *
+   * @param {string} srcValue - The source value to extract trigrams from.
+   * @returns {string[]} An array of trigrams.
+   */
   static getTrigrams(srcValue) {
     const result = [];
     const value = srcValue
@@ -69,6 +78,12 @@ class Language {
     return result;
   }
 
+  /**
+   * Converts the given value into an array of tuples representing the trigrams and their frequencies.
+   *
+   * @param {string} value - The value to convert into tuples.
+   * @returns {Array<Array<string, number>>} - An array of tuples representing the trigrams and their frequencies.
+   */
   static asTuples(value) {
     const dictionary = Language.getTrigrams(value).reduce(
       (srcprev, current) => {
@@ -86,6 +101,12 @@ class Language {
     return tuples;
   }
 
+  /**
+   * Calculates the distance between the given trigrams and the model.
+   * @param {Array} trigrams - The trigrams to compare.
+   * @param {Object} model - The model to compare against.
+   * @returns {number} The calculated distance.
+   */
   static getDistance(trigrams, model) {
     let distance = 0;
     trigrams.forEach((currentTrigram) => {
@@ -97,11 +118,24 @@ class Language {
     return distance;
   }
 
+  /**
+   * Calculates the occurrence of a given expression in a string.
+   *
+   * @param {string} value - The string to search for occurrences.
+   * @param {RegExp} expression - The regular expression to match against the string.
+   * @returns {number} - The occurrence of the expression in the string.
+   */
   static getOccurrence(value, expression) {
     const count = value.match(expression);
     return (count ? count.length : 0) / value.length || 0;
   }
 
+  /**
+   * Checks if a given string contains mostly Latin characters.
+   *
+   * @param {string} value - The string to check.
+   * @returns {boolean} - Returns true if the string contains mostly Latin characters, false otherwise.
+   */
   static isLatin(value) {
     let total = 0;
     const half = value.length / 2;
@@ -117,6 +151,12 @@ class Language {
     return total > half;
   }
 
+  /**
+   * Returns the top script and its occurrence count for the given value.
+   *
+   * @param {string} value - The value to analyze.
+   * @returns {Array} An array containing the top script and its occurrence count.
+   */
   static getTopScript(value) {
     if (Language.isLatin(value)) {
       return ["Latin", 1];
@@ -137,6 +177,14 @@ class Language {
     return [topScript, topCount];
   }
 
+  /**
+   * Filters the given languages based on the allowList and denyList.
+   *
+   * @param {Object} languages - The object containing the languages to be filtered.
+   * @param {string[]} allowList - The list of languages to allow. If empty, all languages are allowed.
+   * @param {string[]} denyList - The list of languages to deny. If empty, no languages are denied.
+   * @returns {Object} - The filtered languages object.
+   */
   static filterLanguages(languages, allowList, denyList) {
     if (allowList.length === 0 && denyList.length === 0) {
       return languages;
@@ -153,6 +201,15 @@ class Language {
     return filteredLanguages;
   }
 
+  /**
+   * Calculates the distances between trigrams and source languages.
+   * @param {Array} trigrams - The trigrams to compare.
+   * @param {Array} srcLanguages - The source languages to compare against.
+   * @param {Object} options - The options for filtering languages.
+   * @param {Array} options.allowList - The list of allowed languages.
+   * @param {Array} options.denyList - The list of denied languages.
+   * @returns {Array} - An array of distances between trigrams and languages, sorted in ascending order.
+   */
   static getDistances(trigrams, srcLanguages, options) {
     const distances = [];
     const allowList = options.allowList || [];
@@ -174,12 +231,20 @@ class Language {
     return distances.sort((a, b) => a[1] - b[1]);
   }
 
+  /**
+   * Detects the language of the given source value.
+   * @param {String} srcValue
+   * @param {Object} settings
+   * @param {Number} settings.minLength
+   * @param {Array} settings.allowList
+   * @returns {Array}
+   */
   static detectAll(srcValue, settings = {}) {
     const minLength = settings.minLength || 10;
     if (!srcValue || srcValue.length < minLength) {
       return und();
     }
-    const value = srcValue.substr(0, 2048);
+    const value = srcValue.substring(0, 2048);
     const script = Language.getTopScript(value);
     if (!(script[0] in data) && script[1] > 0.5) {
       if (settings.allowList) {
@@ -210,6 +275,9 @@ class Language {
     return [[script[0], 1]];
   }
 
+  /**
+   * Builds the language data by iterating over the languageData array and populating the languagesAlpha3 and languagesAlpha2 objects.
+   */
   buildData() {
     for (const element of languageData) {
       const language = {
@@ -222,6 +290,27 @@ class Language {
     }
   }
 
+  /**
+   * Sorts and filters the detected languages based on the allow list.
+   *
+   * @param {Array} detectedLanguages - The array of detected languages.
+   * @param {Array} allowList - The array of allowed languages.
+   * @returns {Object} - The filtered and sorted language object with the highest score.
+   */
+  sortDetectedLanguages(detectedLanguages, allowList) {
+    const filteredLanguages = detectedLanguages.filter((language) =>
+      allowList.includes(language.alpha3)
+    );
+    filteredLanguages.sort((a, b) => b.score - a.score);
+    return filteredLanguages[0];
+  }
+
+  /**
+   * Transforms the allow list by converting language codes to alpha-3 codes.
+   *
+   * @param {string[]} allowList - The list of language codes to transform.
+   * @returns {string[]} The transformed allow list with alpha-3 codes.
+   */
   transformAllowList(allowList) {
     const result = [];
     for (const element of allowList) {
@@ -237,14 +326,21 @@ class Language {
     return result;
   }
 
+  /**
+   * Guesses the language of the given utterance.
+   *
+   * @param {string} utterance - The utterance to guess the language for.
+   * @param {string[]} allowList - The list of allowed languages.
+   * @param {number} limit - The maximum number of results to return.
+   * @returns {Object[]} - An array of language objects containing the alpha3 code, alpha2 code, language name, and score.
+   */
   guess(utterance, allowList, limit) {
     const options = {};
     if (utterance.length < 10) {
       options.minLength = utterance.length;
     }
-    if (allowList && allowList.length && allowList.length > 0) {
-      options.allowList = this.transformAllowList(allowList);
-    }
+    options.allowList =
+      allowList?.length > 0 ? this.transformAllowList(allowList) : undefined;
     const scores = Language.detectAll(utterance, options);
     const result = [];
     for (const element of scores) {
@@ -276,6 +372,11 @@ class Language {
     return this.guess(utterance, allowList, 1)[0];
   }
 
+  /**
+   * Adds trigrams to the data object based on the given locale and sentence.
+   * @param {string} locale - The locale to determine the language.
+   * @param {string} sentence - The sentence to extract trigrams from.
+   */
   addTrigrams(locale, sentence) {
     const language = this.languagesAlpha2[locale];
     const iso3 = language ? language.alpha3 : locale;
@@ -291,28 +392,51 @@ class Language {
     }
   }
 
+  /**
+   * Adds an extra sentence to the language object.
+   * @param {string} locale - The locale of the sentence.
+   * @param {string} sentence - The sentence to be added.
+   */
   addExtraSentence(locale, sentence) {
     this.extraSentences.push([locale, sentence]);
     this.addTrigrams(locale, sentence);
   }
 
+  /**
+   * Processes the extra sentences by adding their trigrams.
+   */
   processExtraSentences() {
     this.extraSentences.forEach((item) => {
       this.addTrigrams(item[0], item[1]);
     });
   }
 
+  /**
+   * Splits a string into an array of language codes.
+   * If the string contains a pipe character ('|'), it splits the string using the pipe as the delimiter.
+   * Otherwise, it splits the string into chunks of 3 characters each.
+   *
+   * @param {string} s - The input string to be split.
+   * @returns {string[]} - An array of language codes.
+   */
   static lansplit(s) {
     if (s.includes("|")) {
       return s.split("|");
     }
     const result = [];
     for (let i = 0; i < s.length; i += 3) {
-      result.push(s.substr(i, 3));
+      result.push(s.substring(i, i + 3));
     }
     return result;
   }
 
+  /**
+   * Adds a model to the specified language script.
+   *
+   * @param {string} script - The language script to add the model to.
+   * @param {string} name - The name of the model.
+   * @param {string} value - The value of the model.
+   */
   static addModel(script, name, value) {
     const languages = data[script];
     const model = Language.lansplit(value);
@@ -325,10 +449,20 @@ class Language {
     languages[name] = trigrams;
   }
 
+  /**
+   * Adds a model to the Language class.
+   *
+   * @param {string} script - The script of the model.
+   * @param {string} name - The name of the model.
+   * @param {any} value - The value of the model.
+   */
   addModel(script, name, value) {
     Language.addModel(script, name, value);
   }
 
+  /**
+   * Builds the language model by adding scripts and languages to the model.
+   */
   static buildModel() {
     Object.keys(data).forEach((script) => {
       const languages = data[script];
