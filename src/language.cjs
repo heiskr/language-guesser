@@ -300,13 +300,11 @@ class Language {
   sortDetectedLanguages(detectedLanguages, allowList) {
     const filteredLanguages = [];
     for (const language of detectedLanguages) {
-      for (const allowedLanguage of allowList) {
-        if (language.alpha3 === allowedLanguage.alpha3) {
-          filteredLanguages.push(language);
-        }
+      if (allowList.includes(language.alpha3)) {
+        filteredLanguages.push(language);
       }
     }
-
+  
     filteredLanguages.sort((a, b) => b.score - a.score);
     if (filteredLanguages.length > 0) {
       return filteredLanguages[0];
