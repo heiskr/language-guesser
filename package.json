@@ -7,13 +7,5 @@
   "types": "src/index.d.ts",
   "main": "src/index.cjs",
   "module": "src/index.js",
-  "scripts": {
-    "build-cjs": "babel src --out-dir dist/cjs --presets=@babel/preset-env"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.24.5",
-    "@babel/plugin-proposal-unicode-property-regex": "^7.18.6",
-    "@babel/plugin-syntax-import-attributes": "^7.24.1",
-    "@babel/preset-env": "^7.24.5"
-  }
+  "scripts": {}
 }

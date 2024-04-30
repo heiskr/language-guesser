@@ -1,5 +1,5 @@
-import languageData from './languages.json' assert { type: "json" };
-import data from './data.json' assert { type: "json" };
+import languageData from "./languages.json" assert { type: "json" };
+import data from "./data.json" assert { type: "json" };
 
 const scripts = {
   cmn: /[\u2E80-\u2E99\u2E9B-\u2EF3\u2F00-\u2FD5\u3005\u3007\u3021-\u3029\u3038-\u303B\u3400-\u4DB5\u4E00-\u9FCC\uF900-\uFA6D\uFA70-\uFAD9]|[\uD840-\uD868\uD86A-\uD86C][\uDC00-\uDFFF]|\uD869[\uDC00-\uDED6\uDF00-\uDFFF]|\uD86D[\uDC00-\uDF34\uDF40-\uDFFF]|\uD86E[\uDC00-\uDC1D]|\uD87E[\uDC00-\uDE1D]/g,
@@ -41,7 +41,7 @@ const scripts = {
 
 const scriptKeys = Object.keys(scripts);
 
-const und = () => [['und', 1]];
+const und = () => [["und", 1]];
 
 class Language {
   constructor() {
@@ -55,11 +55,11 @@ class Language {
     const result = [];
     const value = srcValue
       ? ` ${String(srcValue)
-          .replace(/[\u0021-\u0040]+/g, ' ')
-          .replace(/\s+/g, ' ')
+          .replace(/[\u0021-\u0040]+/g, " ")
+          .replace(/\s+/g, " ")
           .trim()
           .toLowerCase()} `
-      : '';
+      : "";
     if (!value || value.length < 3) {
       return result;
     }
@@ -119,7 +119,7 @@ class Language {
 
   static getTopScript(value) {
     if (Language.isLatin(value)) {
-      return ['Latin', 1];
+      return ["Latin", 1];
     }
     let topCount = -1;
     let topScript;
@@ -186,8 +186,8 @@ class Language {
         if (settings.allowList.includes(script[0])) {
           return [[script[0], 1]];
         }
-        if (script[0] === 'cmn' && settings.allowList.includes('jpn')) {
-          return [['jpn', 1]];
+        if (script[0] === "cmn" && settings.allowList.includes("jpn")) {
+          return [["jpn", 1]];
         }
       } else {
         return [[script[0], 1]];
@@ -200,7 +200,7 @@ class Language {
         data[script[0]],
         settings
       );
-      if (distances[0][0] === 'und') {
+      if (distances[0][0] === "und") {
         return [[script[0], 1]];
       }
       const min = distances[0][1];
@@ -303,8 +303,8 @@ class Language {
   }
 
   static lansplit(s) {
-    if (s.includes('|')) {
-      return s.split('|');
+    if (s.includes("|")) {
+      return s.split("|");
     }
     const result = [];
     for (let i = 0; i < s.length; i += 3) {
