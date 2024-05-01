@@ -46,7 +46,6 @@ Detects the language of the provided `utterance`. You can optionally specify an 
 
 #### `guessBest(utterance: string, allowList?: string[]): { alpha3: string; alpha2: string; language: string; score: number } | undefined`
 
-
 Returns the best guess for the language of the `utterance`. You can optionally specify an `allowList` of accepted languages.
 
 #### `addExtraSentence(locale: string, sentence: string): void`

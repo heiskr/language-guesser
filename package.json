@@ -1,6 +1,6 @@
 {
   "name": "@horizon-rs/language-guesser",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "TypeScript compatible language guesser based on n-grams",
   "type": "module",
   "license": "MIT",
