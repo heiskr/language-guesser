@@ -1,6 +1,6 @@
 {
-  "name": "language-guesser",
-  "version": "0.0.1",
+  "name": "@horizon-rs/language-guesser",
+  "version": "0.0.2",
   "description": "TypeScript compatible language guesser based on n-grams",
   "type": "module",
   "license": "MIT",
@@ -12,5 +12,17 @@
   },
   "devDependencies": {
     "jest": "^29.7.0"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaximilianoVeiga/language-guesser.git"
+  },
+  "author": "MaximilianoVeiga",
+  "bugs": {
+    "url": "https://github.com/MaximilianoVeiga/language-guesser/issues"
+  },
+  "homepage": "https://github.com/MaximilianoVeiga/language-guesser#readme"
 }
