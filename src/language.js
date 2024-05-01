@@ -119,7 +119,7 @@ class Language {
    * @returns {number} - The occurrence of the expression in the string.
    */
   static getOccurrence(value, expression) {
-    const count = RegExp(expression).exec(value)?.length ?? 0;
+    const count = value.match(expression)?.length ?? 0;
     return count / value.length || 0;
   }
 
