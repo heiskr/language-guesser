@@ -18,7 +18,7 @@ yarn add @horizon-rs/language-guesser
 
 ## Usage
 
-Here's a quick example of how to use Language Guesser:
+Detecting a list of possible languages of a text
 
 ```javascript
 import { Language } from '@horizon-rs/language-guesser';
@@ -28,6 +28,55 @@ const text = 'This is a sample text in English.';
 const result = language.guess(text);
 
 console.log('Detected language:', result);
+```
+
+```json
+Detected languages: [
+  {
+    alpha3: 'eng',
+    alpha2: 'en',
+    language: 'English',
+    score: 0.9059288537549407
+  },
+...
+]
+```
+
+Detecting the best single language of a given text
+
+```javascript
+import { Language } from '@horizon-rs/language-guesser';
+
+const language = new Language();
+const text = 'This is a sample text in English.';
+const result = language.guessBest(text);
+
+console.log('Detected languages:', result);
+```
+
+```json
+Detected languages: {
+  alpha3: 'eng',
+  alpha2: 'en',
+  language: 'English',
+  score: 0.9059288537549407
+}
+```
+
+Specifying expected language options for detection
+
+```javascript
+import { Language } from '@horizon-rs/language-guesser';
+
+const language = new Language();
+const text = 'This is a sample text in English.';
+const result = language.guessBest(text, ['eng']);
+
+console.log('Detected language:', result);
+```
+
+```json
+Detected language: { alpha3: 'eng', alpha2: 'en', language: 'English', score: 1 }
 ```
 
 ## API
