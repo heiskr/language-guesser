@@ -7,5 +7,10 @@
   "types": "src/index.d.ts",
   "main": "src/index.cjs",
   "module": "src/index.js",
-  "scripts": {}
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
 }
