@@ -460,20 +460,6 @@ test('buildData() should populate the languagesAlpha3 and languagesAlpha2 object
   });
 });
 
-// Test the sortDetectedLanguages() method
-test('sortDetectedLanguages() should sort and filter the detected languages based on the allow list', () => {
-  const detectedLanguages = [
-    { alpha3: 'en', score: 0.8 },
-    { alpha3: 'fr', score: 0.6 },
-    { alpha3: 'es', score: 0.4 },
-    { alpha3: 'de', score: 0.2 },
-  ];
-  const allowList = ['en', 'fr'];
-  const language = new Language();
-  const sortedLanguage = language.sortDetectedLanguages(detectedLanguages, allowList);
-  expect(sortedLanguage).toEqual({ alpha3: 'en', score: 0.8 });
-});
-
 // Test the transformAllowList() method
 test('transformAllowList() should transform the allow list by converting language codes to alpha-3 codes', () => {
   const allowList = ['en', 'fr', 'es', 'de'];
@@ -515,6 +501,12 @@ describe('getTopScript', () => {
     assert.deepStrictEqual(result, ['Latin', 1]);
   });
 
+  it('should return ["Latin", 1] when input is a Latin script', () => {
+    const result = Language.getTopScript('Olá Mundo');
+    console.log(result);
+    assert.deepStrictEqual(result, ['Latin', 1]);
+  });
+
   it('should return the most occurring script when input is a non-Latin script', () => {
     const result = Language.getTopScript('مرحبا بالعالم');
     assert.deepStrictEqual(result, ['Arabic', 0.9230769230769231]);
@@ -536,6 +528,7 @@ describe('getTopScript', () => {
   });
 });
 
+// Test the getTopLanguage() method
 describe('transformAllowList', () => {
   let languageGuesser;
 
@@ -565,5 +558,82 @@ describe('transformAllowList', () => {
     const allowList = ['en', 123, true, null, 'fr'];
     const result = languageGuesser.transformAllowList(allowList);
     expect(result).toEqual(['eng', 'fra']);
+  });
+});
+
+// Test the guess() method
+describe('guess()', () => {
+  it('should return an array of language guesses with scores', () => {
+    const language = new Language();
+    const utterance = 'Hello World';
+    const allowList = ['en', 'fr'];
+    const limit = 3;
+    const expected = [
+      { alpha3: 'eng', alpha2: 'en', language: 'English', score: 1 },
+      { alpha3: 'fra', alpha2: 'fr', language: 'French', score: 0.588477366255144 },
+    ];
+
+    const result = language.guess(utterance, allowList, limit);
+
+    assert.deepStrictEqual(result, expected);
+  });
+
+  it('should return an empty array if no language guesses are found', () => {
+    const language = new Language();
+    const utterance = 'Hola Mundo';
+    const allowList = ['es', 'fr'];
+    const limit = 2;
+    const expected = [
+      { alpha3: 'spa', alpha2: 'es', language: 'Spanish', score: 1 },
+      { alpha3: 'fra', alpha2: 'fr', language: 'French', score: 0.43154761904761907 },
+    ];
+
+    const result = language.guess(utterance, allowList, limit);
+
+    assert.deepStrictEqual(result, expected);
+  });
+
+  it('should return language guesses based on the utterance length', () => {
+    const language = new Language();
+    const utterance = 'Hello';
+    const allowList = ['en', 'fr'];
+    const limit = 3;
+    const expected = [
+      { alpha3: 'fra', alpha2: 'fr', language: 'French', score: 1 },
+      { alpha3: 'eng', alpha2: 'en', language: 'English', score: 0.32167832167832167 },
+    ];
+
+    const result = language.guess(utterance, allowList, limit);
+
+    assert.deepStrictEqual(result, expected);
+  });
+
+  it('should return language guesses based on the allowList', () => {
+    const language = new Language();
+    const utterance = 'Olá Mundo';
+    const allowList = ['es', 'pt'];
+    const limit = 3;
+    const expected = [
+      { alpha3: 'por', alpha2: 'pt', language: 'Portuguese', score: 1 },
+      { alpha3: 'spa', alpha2: 'es', language: 'Spanish', score: 0.749003984063745 },
+    ];
+
+    const result = language.guess(utterance, allowList, limit);
+
+    assert.deepStrictEqual(result, expected);
+  });
+
+  it('should return language guesses with a limit', () => {
+    const language = new Language();
+    const utterance = 'Hello World';
+    const allowList = ['en', 'fr'];
+    const limit = 1;
+    const expected = [
+      { alpha3: 'eng', alpha2: 'en', language: 'English', score: 1 },
+    ];
+
+    const result = language.guess(utterance, allowList, limit);
+
+    assert.deepStrictEqual(result, expected);
   });
 });

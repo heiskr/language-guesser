@@ -280,27 +280,6 @@ class Language {
   }
 
   /**
-   * Sorts the detected languages based on their scores and filters them based on the allow list.
-   * @param {Array} detectedLanguages - The array of detected languages.
-   * @param {Array} allowList - The array of languages to allow.
-   * @returns {Object|null} - The highest-scoring language from the filtered list, or null if the list is empty.
-   */
-  sortDetectedLanguages(detectedLanguages, allowList) {
-    const filteredLanguages = [];
-    for (const language of detectedLanguages) {
-      if (allowList.includes(language.alpha3)) {
-        filteredLanguages.push(language);
-      }
-    }
-
-    filteredLanguages.sort((a, b) => b.score - a.score);
-    if (filteredLanguages.length > 0) {
-      return filteredLanguages[0];
-    }
-    return null;
-  }
-
-  /**
    * Transforms the allow list by converting language codes to alpha-3 codes.
    *
    * @param {string[]} allowList - The list of language codes to transform.
