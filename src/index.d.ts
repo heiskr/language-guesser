@@ -1,4 +1,4 @@
-declare module 'language-guesser' {
+declare module '@horizon-rs/language-guesser' {
     export class Language {
         languagesAlpha3: { [key: string]: { alpha2: string; alpha3: string; name: string } };
         languagesAlpha2: { [key: string]: { alpha2: string; alpha3: string; name: string } };
