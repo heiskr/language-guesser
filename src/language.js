@@ -131,11 +131,11 @@ class Language {
    */
   static isLatin(value) {
     const half = value.length / 2;
-    const total = [...value].filter(char => {
+    const total = [...value].filter((char) => {
       const c = char.charCodeAt(0);
       return c >= 32 && c <= 126;
     }).length;
-    
+
     return total > half;
   }
 
@@ -311,15 +311,23 @@ class Language {
   guess(utterance, allowList, limit) {
     const options = {
       minLength: utterance.length < 10 ? utterance.length : undefined,
-      allowList: allowList?.length > 0 ? this.transformAllowList(allowList) : undefined
+      allowList:
+        allowList?.length > 0 ? this.transformAllowList(allowList) : undefined,
     };
-  
+
     const scores = Language.detectAll(utterance, options);
-  
+
     return scores
       .map(([alpha3, score]) => {
         const language = this.languagesAlpha3[alpha3];
-        return language ? { alpha3: language.alpha3, alpha2: language.alpha2, language: language.name, score } : null;
+        return language
+          ? {
+              alpha3: language.alpha3,
+              alpha2: language.alpha2,
+              language: language.name,
+              score,
+            }
+          : null;
       })
       .filter(Boolean)
       .slice(0, limit);
