@@ -51,16 +51,17 @@ declare module '@horizon-rs/language-guesser' {
         private static getDistances(trigrams: TrigramTuple[], srcLanguages: Record<string, Model>, options: { allowList?: string[]; denyList?: string[] }): [string, number][];
         private static detectAll(srcValue: string, settings?: LanguageOptions): [string, number][];
         private buildData(): void;
-        private sortDetectedLanguages(detectedLanguages: DetectionResult[], allowList: string[]): DetectionResult | null;
+
         private transformAllowList(allowList: string[]): string[];
         guess(utterance: string, allowList?: string[], limit?: number): GuessResult[];
-        guessBest(utterance: string, allowList: string[]): string;
+        guessBest(utterance: string, allowList: string[]): GuessResult;
         addTrigrams(locale: string, sentence: string): void;
         addExtraSentence(locale: string, sentence: string): void;
         processExtraSentences(): void;
         private static lansplit(s: string): string[];
         private static addModel(script: string, name: string, value: any): void;
         private addModel(script: string, name: string, value: any): void;
+        
         private static buildModel(): void;
     }
 }
