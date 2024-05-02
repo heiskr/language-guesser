@@ -1,34 +1,64 @@
-declare module '@horizon-rs/language-guesser' {
-    export class Language {
-        languagesAlpha3: { [key: string]: { alpha2: string; alpha3: string; name: string } };
-        languagesAlpha2: { [key: string]: { alpha2: string; alpha3: string; name: string } };
-        extraSentences: Array<[string, string]>;
+type LanguageData = [string, string, string][];
 
-        constructor();
+type Trigram = string;
+type TrigramFrequency = number;
+type TrigramTuple = [Trigram, TrigramFrequency];
+type TrigramDictionary = Record<Trigram, TrigramFrequency>;
 
-        static getTrigrams(srcValue: string): string[];
-        static asTuples(value: string): Array<[string, number]>;
-        static getDistance(trigrams: Array<[string, number]>, model: { [key: string]: number }): number;
-        static getOccurrence(value: string, expression: RegExp): number;
-        static isLatin(value: string): boolean;
-        static getTopScript(value: string): [string, number];
-        static filterLanguages(languages: { [key: string]: { [key: string]: number } }, allowList: string[], denyList: string[]): { [key: string]: { [key: string]: number } };
-        static getDistances(trigrams: Array<[string, number]>, srcLanguages: { [key: string]: { [key: string]: number } }, options: { allowList?: string[]; denyList?: string[] }): Array<[string, number]>;
-        static detectAll(srcValue: string, settings?: { minLength?: number; allowList?: string[] }): Array<[string, number]> | undefined;
+type Script = string;
+type Model = Record<Trigram, number>;
 
-        buildData(): void;
-        transformAllowList(allowList: string[]): string[];
-        guess(utterance: string, allowList?: string[], limit?: number): Array<{ alpha3: string; alpha2: string; language: string; score: number }>;
-        guessBest(utterance: string, allowList?: string[]): { alpha3: string; alpha2: string; language: string; score: number } | undefined;
-        addTrigrams(locale: string, sentence: string): void;
-        addExtraSentence(locale: string, sentence: string): void;
-        processExtraSentences(): void;
-        sortDetectedLanguages(detectedLanguages: Array<{ alpha3: string; alpha2: string; language: string; score: number }>, allowList: string[]): { alpha3: string; alpha2: string; language: string; score: number };
+export interface LanguageOptions {
+    minLength?: number;
+    allowList?: string[];
+}
 
-        static lansplit(s: string): string[] | undefined;
-        static addModel(script: string, name: string, value: string): void;
-        addModel(script: string, name: string, value: string): void;
+export interface DetectionResult {
+    alpha3: string | null;
+    alpha2: string | null;
+    language: string | null;
+    score: number;
+}
 
-        static buildModel(): void;
-    }
+export interface GuessResult {
+    alpha3: string | null;
+    alpha2: string | null;
+    language: string | null;
+    score: number;
+}
+
+export interface GuessOptions {
+    minLength?: number;
+    allowList?: string[];
+    limit?: number;
+}
+
+export declare class Language {
+    private languagesAlpha3: Record<string, { alpha2: string; alpha3: string; name: string }>;
+    private languagesAlpha2: Record<string, { alpha2: string; alpha3: string; name: string }>;
+    private extraSentences: [string, string][];
+
+    constructor();
+
+    private static getTrigrams(srcValue: string): Trigram[];
+    private static asTuples(value: string): TrigramTuple[];
+    private static getDistance(trigrams: TrigramTuple[], model: Model): number;
+    private static getOccurrence(value: string, expression: RegExp): number;
+    private static isLatin(value: string): boolean;
+    private static getTopScript(value: string): [Script, number];
+    private static filterLanguages(languages: Record<string, Model>, allowList: string[], denyList: string[]): Record<string, Model>;
+    private static getDistances(trigrams: TrigramTuple[], srcLanguages: Record<string, Model>, options: { allowList?: string[]; denyList?: string[] }): [string, number][];
+    private static detectAll(srcValue: string, settings?: LanguageOptions): [string, number][];
+    private buildData(): void;
+    private sortDetectedLanguages(detectedLanguages: DetectionResult[], allowList: string[]): DetectionResult | null;
+    private transformAllowList(allowList: string[]): string[];
+    guess(utterance: string, allowList?: string[], limit?: number): GuessResult[];
+    guessBest(utterance: string, allowList: string[]): string;
+    addTrigrams(locale: string, sentence: string): void;
+    addExtraSentence(locale: string, sentence: string): void;
+    processExtraSentences(): void;
+    private static lansplit(s: string): string[];
+    private static addModel(script: string, name: string, value: any): void;
+    private addModel(script: string, name: string, value: any): void;
+    private static buildModel(): void;
 }
