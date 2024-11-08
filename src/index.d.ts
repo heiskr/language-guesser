@@ -54,7 +54,7 @@ declare module '@horizon-rs/language-guesser' {
 
         private transformAllowList(allowList: string[]): string[];
         guess(utterance: string, allowList?: string[], limit?: number): GuessResult[];
-        guessBest(utterance: string, allowList: string[]): GuessResult;
+        guessBest(utterance: string, allowList?: string[]): GuessResult;
         addTrigrams(locale: string, sentence: string): void;
         addExtraSentence(locale: string, sentence: string): void;
         processExtraSentences(): void;
